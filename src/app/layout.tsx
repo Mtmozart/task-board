@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import { Header } from "@/components/header";
+import Provider from "@/components/provider/provider";
 
 export const metadata: Metadata = {
   title: "Task board",
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body>
-        <Header />
-        {children}
+        <Provider>
+          <Header />
+          {children}
+        </Provider>
       </body>
     </html>
   );
