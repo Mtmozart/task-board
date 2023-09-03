@@ -19,6 +19,9 @@
 .content a {
   text-decoration: none;
 }
+.logo {
+  color: #f1f1f1;
+}
 
 .logo span {
   color: #ea3140;

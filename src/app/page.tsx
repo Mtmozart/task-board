@@ -1,13 +1,11 @@
 import Image from "next/image";
 import HomeCapa from "../../public/assets/hero.png";
 import styles from "../styles/home.module.css";
-import LoginButton from "../components/loginButton/login-btn";
 
 export default function Home() {
   return (
     <div className={styles.container}>
       <main>
-        <LoginButton />
         <div className={styles.logo}>
           <Image
             className={styles.hero}
