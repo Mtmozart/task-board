@@ -12,18 +12,18 @@ import { addDoc, collection } from "firebase/firestore";
 
 //react
 import { ChangeEvent, FormEvent, useState } from "react";
+import { getServerSession } from "next-auth";
 
 export const metadata: Metadata = {
   title: "My painel of tasks",
   description: "My tasks in the task-board",
 };
 
-export default function Home() {
+export default function Dashboard() {
   const [input, setInput] = useState("");
   const [publicTask, setPublicTask] = useState(false);
 
   function handleChangePublic(e: ChangeEvent<HTMLInputElement>) {
-    console.log(e.target.checked);
     setPublicTask(e.target.checked);
   }
 
@@ -34,9 +34,12 @@ export default function Home() {
       await addDoc(collection(db, "tasks"), {
         task: input,
         created: new Date(),
-        user: "",
+        user: session?.user?.email,
         public: publicTask,
       });
+
+      setInput("");
+      setPublicTask(false);
     } catch (error) {
       console.log(error);
     }
