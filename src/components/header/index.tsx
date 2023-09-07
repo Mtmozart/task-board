@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "./styles.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
 
@@ -12,12 +13,12 @@ export function Header() {
         <nav className={styles.nav}>
           <Link href="/">
             <h1 className={styles.logo}>
-              Tarefas <span>+</span>
+              Tasks <span>+</span>
             </h1>
           </Link>
           {session?.user && (
             <Link className={styles.link} href="/dashboard">
-              Meu painel
+              My painel
             </Link>
           )}
         </nav>
