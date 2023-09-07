@@ -41,41 +41,35 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
   //useRef
   const controlUseEffect = useRef(false);
-  const email = session?.user?.email;
-
+  const email = session?.user?.email || "";
   useEffect(() => {
     async function loadTasks() {
-      if (!controlUseEffect.current) {
-        if (email) {
-          const tasksRef = collection(db, "tasks");
-          const q = await query(
-            tasksRef,
-            orderBy("created", "desc"),
-            where("user", "==", email)
-          );
+      //controle de repetição
 
-          onSnapshot(q, (snapshot) => {
-            let list = [] as TaskProps[];
+      const tasksRef = collection(db, "tasks");
+      const q = await query(
+        tasksRef,
+        orderBy("created", "desc"),
+        where("user", "==", email)
+      );
 
-            snapshot.forEach((doc) => {
-              list.push({
-                id: doc.id,
-                task: doc.data().task,
-                created: doc.data().created,
-                user: doc.data().user,
-                public: doc.data().public,
-              });
-            });
-            console.log("if", email);
+      onSnapshot(q, (snapshot) => {
+        let list = [] as TaskProps[];
+
+        snapshot.forEach((doc) => {
+          list.push({
+            id: doc.id,
+            task: doc.data().task,
+            created: doc.data().created,
+            user: doc.data().user,
+            public: doc.data().public,
           });
-        } else {
-          console.log("Else", email);
-        }
-        loadTasks();
-        console.log("final", email);
-      }
-      controlUseEffect.current = true;
+        });
+        setTasks(list);
+      });
     }
+
+    loadTasks();
   }, [email]);
 
   //
@@ -132,20 +126,25 @@ export default function Dashboard() {
 
       <section className={styles.taskContainer}>
         <h2>My tasks</h2>
-        <article className={styles.task}>
-          <div className={styles.tagContainer}>
-            <label className={styles.tag}>Public</label>
-            <button className={styles.sharedButton}>
-              <FiShare2 size={32} color="#3183ff" />
-            </button>
-          </div>
-          <div className={styles.taskContent}>
-            <p>My first task for example</p>
-            <button className={styles.trashButton}>
-              <FaTrash size={24} color="#ea3140" />
-            </button>
-          </div>
-        </article>
+        {tasks.length &&
+          tasks.map((item) => (
+            <article className={styles.task} key={item.id}>
+              {item.public && (
+                <div className={styles.tagContainer}>
+                  <label className={styles.tag}>Public</label>
+                  <button className={styles.sharedButton}>
+                    <FiShare2 size={32} color="#3183ff" />
+                  </button>
+                </div>
+              )}
+              <div className={styles.taskContent}>
+                <p>{item.task}</p>
+                <button className={styles.trashButton}>
+                  <FaTrash size={24} color="#ea3140" />
+                </button>
+              </div>
+            </article>
+          ))}
       </section>
     </main>
   );
