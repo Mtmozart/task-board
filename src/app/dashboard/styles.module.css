@@ -123,3 +123,12 @@
   border: 0;
   padding: 0 8px;
 }
+
+.title {
+  display: flex;
+  width: 100%;
+  max-height: 40px;
+  align-items: center;
+  justify-content: center;
+  color: #0f0f0f;
+}

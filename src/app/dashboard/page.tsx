@@ -1,5 +1,6 @@
 "use client";
 import { Metadata } from "next";
+
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import styles from "./styles.module.css";
@@ -17,10 +18,13 @@ import {
   query,
   where,
   onSnapshot,
+  doc,
+  deleteDoc,
 } from "firebase/firestore";
 
 //react
-import { ChangeEvent, FormEvent, useState, useEffect, useRef } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "My painel of tasks",
@@ -39,8 +43,7 @@ export default function Dashboard() {
   const [input, setInput] = useState("");
   const [publicTask, setPublicTask] = useState(false);
   const [tasks, setTasks] = useState<TaskProps[]>([]);
-  //useRef
-  const controlUseEffect = useRef(false);
+
   const email = session?.user?.email || "";
   useEffect(() => {
     async function loadTasks() {
@@ -94,6 +97,17 @@ export default function Dashboard() {
       console.log(error);
     }
   }
+  async function handleShared(id: string) {
+    await navigator.clipboard.writeText(
+      `${process.env.NEXT_PUBLIC_URL}/task/${id}`
+    );
+    alert("deu certo");
+  }
+
+  async function handleDeleteTask(id: string) {
+    const docRef = doc(db, "tasks", id);
+    await deleteDoc(docRef);
+  }
 
   return (
     <main className={styles.main}>
@@ -125,26 +139,42 @@ export default function Dashboard() {
       </section>
 
       <section className={styles.taskContainer}>
-        <h2>My tasks</h2>
-        {tasks.length &&
+        {tasks.length ? (
           tasks.map((item) => (
             <article className={styles.task} key={item.id}>
               {item.public && (
                 <div className={styles.tagContainer}>
                   <label className={styles.tag}>Public</label>
-                  <button className={styles.sharedButton}>
+                  <button
+                    className={styles.sharedButton}
+                    onClick={() => handleShared(item.id)}
+                  >
                     <FiShare2 size={32} color="#3183ff" />
                   </button>
                 </div>
               )}
               <div className={styles.taskContent}>
-                <p>{item.task}</p>
-                <button className={styles.trashButton}>
+                {item.public ? (
+                  <Link href={`/task/${item.id}`}>
+                    <p>{item.task}</p>
+                  </Link>
+                ) : (
+                  <p>{item.task}</p>
+                )}
+                <button
+                  className={styles.trashButton}
+                  onClick={() => handleDeleteTask(item.id)}
+                >
                   <FaTrash size={24} color="#ea3140" />
                 </button>
               </div>
             </article>
-          ))}
+          ))
+        ) : (
+          <article className={styles.title}>
+            <h1>No tasks registered</h1>
+          </article>
+        )}
       </section>
     </main>
   );
