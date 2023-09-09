@@ -7,12 +7,12 @@ import {
   onSnapshot,
 } from "firebase/firestore";
 
-export async function loadTasks(id: string) {
+export async function loadTasks(email: string) {
   const tasksRef = collection(db, "tasks");
   const q = await query(
     tasksRef,
     orderBy("created", "desc"),
-    where("id", "==", id)
+    where("id", "==", email)
   );
 
   onSnapshot(q, (snapshot) => {
