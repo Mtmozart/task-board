@@ -1,8 +1,11 @@
+"sever side";
 import { Metadata } from "next";
 import styles from "./styles.module.css";
 import { db } from "@/services/FireBaseConnection";
 import { getDoc, doc } from "firebase/firestore";
 import { ITaskProps } from "./iTaskInterface";
+import { redirect } from "next/navigation";
+import { TextArea } from "@/components/textArea/page";
 
 export const metadata: Metadata = {
   title: "Details",
@@ -13,19 +16,6 @@ export async function loadTasksById(id: string) {
   const docRef = doc(db, "tasks", id);
 
   const snapshot = await getDoc(docRef);
-  if (snapshot.data() === undefined) {
-    return {
-      redirect: "/",
-      permanent: false,
-    };
-  }
-
-  if (!snapshot.data()?.public) {
-    return {
-      redirect: "/",
-      permanent: false,
-    };
-  }
 
   const milliseconds = snapshot.data()?.created.seconds * 1000;
 
@@ -36,20 +26,36 @@ export async function loadTasksById(id: string) {
     user: snapshot.data()?.user,
     task_id: id,
   };
-
   return task;
 }
 
 export default async function task({ params }: { params: { id: string } }) {
   const id = params.id as string;
-  const tarefa = await loadTasksById(id);
+  const task: ITaskProps = await loadTasksById(id);
+
+  if (task === undefined) {
+    redirect("/dashboard");
+  }
+
+  if (!task.public) {
+    redirect("/dashboard");
+  }
 
   return (
     <div className={styles.container}>
-      <main>
-        {tarefa && <>{tarefa.task}</>}
-        <h1> </h1>
+      <main className={styles.main}>
+        <h1>Task</h1>
+        <article className={styles.task}>
+          <p>{task.task}</p>
+        </article>
       </main>
+      <section className={styles.commentsContainer}>
+        <h2>Leave a comment</h2>
+        <form action="">
+          <TextArea />
+          <button className={styles.button}>Send comment</button>
+        </form>
+      </section>
     </div>
   );
 }
