@@ -1,11 +1,10 @@
-"sever side";
 import { Metadata } from "next";
 import styles from "./styles.module.css";
 import { db } from "@/services/FireBaseConnection";
 import { getDoc, doc } from "firebase/firestore";
 import { ITaskProps } from "./iTaskInterface";
 import { redirect } from "next/navigation";
-import { TextArea } from "@/components/textArea/page";
+import { Comment } from "@/components/comment";
 
 export const metadata: Metadata = {
   title: "Details",
@@ -29,7 +28,7 @@ export async function loadTasksById(id: string) {
   return task;
 }
 
-export default async function task({ params }: { params: { id: string } }) {
+export default async function Task({ params }: { params: { id: string } }) {
   const id = params.id as string;
   const task: ITaskProps = await loadTasksById(id);
 
@@ -49,13 +48,7 @@ export default async function task({ params }: { params: { id: string } }) {
           <p>{task.task}</p>
         </article>
       </main>
-      <section className={styles.commentsContainer}>
-        <h2>Leave a comment</h2>
-        <form action="">
-          <TextArea />
-          <button className={styles.button}>Send comment</button>
-        </form>
-      </section>
+      <Comment id={task.task_id} />
     </div>
   );
 }
