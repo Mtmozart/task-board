@@ -5,6 +5,7 @@ import { getDoc, doc } from "firebase/firestore";
 import { ITaskProps } from "./iTaskInterface";
 import { redirect } from "next/navigation";
 import { Comment } from "@/components/comment";
+import { loadComments } from "@/ultils/loadComments";
 
 export const metadata: Metadata = {
   title: "Details",
@@ -31,6 +32,7 @@ export async function loadTasksById(id: string) {
 export default async function Task({ params }: { params: { id: string } }) {
   const id = params.id as string;
   const task: ITaskProps = await loadTasksById(id);
+  const comment = loadComments(id);
 
   if (task === undefined) {
     redirect("/dashboard");
@@ -48,7 +50,7 @@ export default async function Task({ params }: { params: { id: string } }) {
           <p>{task.task}</p>
         </article>
       </main>
-      <Comment id={task.task_id} />
+      <Comment id={id} />
     </div>
   );
 }

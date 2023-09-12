@@ -9,7 +9,7 @@ import { db } from "@/services/FireBaseConnection";
 export function Comment(id: any) {
   const { data: session } = useSession();
   const [input, setInput] = useState("");
-
+  const task_id = id.id;
   async function handleComment(e: FormEvent) {
     e.preventDefault();
     if (input === "") return;
@@ -19,10 +19,11 @@ export function Comment(id: any) {
       const docRef = await addDoc(collection(db, "comments"), {
         comment: input,
         created: new Date(),
-        user: session?.user?.email,
-        name: session?.user?.name,
-        task: id,
+        user_email: session?.user?.email,
+        username: session?.user?.name,
+        taskId: task_id,
       });
+
       setInput("");
     } catch (error) {
       console.log(error);
