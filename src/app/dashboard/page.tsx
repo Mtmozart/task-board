@@ -39,6 +39,7 @@ export default function Dashboard() {
       redirect("/");
     },
   });
+  console.log(session);
   //states
   const [input, setInput] = useState("");
   const [publicTask, setPublicTask] = useState(false);
