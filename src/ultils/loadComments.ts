@@ -23,5 +23,9 @@ export async function loadComments(id: any) {
       taskId: doc.data().taskId,
     });
   });
-  console.log(allComments);
+  try {
+    return allComments;
+  } catch (error) {
+    return (allComments = []);
+  }
 }
