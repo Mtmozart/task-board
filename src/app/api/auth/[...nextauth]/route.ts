@@ -17,7 +17,6 @@ const authOptions = {
   ],
   callbacks: {
     async session({ session }: any) {
-      session = session.user as any;
       return session;
     },
   },

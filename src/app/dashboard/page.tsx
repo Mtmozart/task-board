@@ -1,7 +1,7 @@
 "use client";
 import { Metadata } from "next";
-
 import { useSession } from "next-auth/react";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import styles from "./styles.module.css";
 import { TextArea } from "@/components/textArea/page";
@@ -39,7 +39,7 @@ export default function Dashboard() {
       redirect("/");
     },
   });
-  console.log(session);
+
   //states
   const [input, setInput] = useState("");
   const [publicTask, setPublicTask] = useState(false);
