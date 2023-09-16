@@ -16,7 +16,8 @@ export async function AllComments(id: any) {
         <article className={styles.comment} key={item.id}>
           <div className={styles.headComment}>
             <label className={styles.commentsLabel}>{item.username}</label>
-            {item.user_email === session.user.email && (
+
+            {item.user_email == session?.user.email && (
               <button className={styles.buttonTrash}>
                 <FaTrash size={18} color="#ea3140" />
               </button>
