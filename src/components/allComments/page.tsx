@@ -1,8 +1,9 @@
-import { FaTrash } from "react-icons/fa";
-import { loadComments } from "@/ultils/loadComments";
+import { loadComments } from "@/utils/loadComments";
 import styles from "./styles.module.css";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+//delete
+import { DeleteButton } from "../buttomDelete/page";
 
 export async function AllComments(id: any) {
   const session = await getServerSession(authOptions);
@@ -18,9 +19,7 @@ export async function AllComments(id: any) {
             <label className={styles.commentsLabel}>{item.username}</label>
 
             {item.user_email == session?.user.email && (
-              <button className={styles.buttonTrash}>
-                <FaTrash size={18} color="#ea3140" />
-              </button>
+              <DeleteButton id={item.id} />
             )}
           </div>
           <p>{item.comment}</p>

@@ -5,8 +5,10 @@ import { useSession } from "next-auth/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/services/FireBaseConnection";
+import { useRouter } from "next/navigation";
 
 export function Comment(id: any) {
+  const router = useRouter();
   const { data: session } = useSession();
   const [input, setInput] = useState("");
   const task_id = id.id;
@@ -23,8 +25,8 @@ export function Comment(id: any) {
         username: session?.user?.name,
         taskId: task_id,
       });
-
       setInput("");
+      router.refresh();
     } catch (error) {
       console.log(error);
     }

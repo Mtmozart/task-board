@@ -21,10 +21,6 @@
   border-radius: 4px;
 }
 
-.buttonTrash {
-  border: 0;
-  background-color: transparent;
-}
 .comment p {
   margin-top: 14px;
   white-space: pre-wrap;

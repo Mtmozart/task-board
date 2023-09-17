@@ -1,7 +1,6 @@
 "use client";
 import { Metadata } from "next";
 import { useSession } from "next-auth/react";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import styles from "./styles.module.css";
 import { TextArea } from "@/components/textArea/page";
@@ -102,7 +101,6 @@ export default function Dashboard() {
     await navigator.clipboard.writeText(
       `${process.env.NEXT_PUBLIC_URL}/task/${id}`
     );
-    alert("deu certo");
   }
 
   async function handleDeleteTask(id: string) {
