@@ -1,8 +1,12 @@
 import Image from "next/image";
 import HomeCapa from "../../public/assets/hero.png";
 import styles from "../styles/home.module.css";
+import { ButtonHome } from "@/components/buttonHome/buttonsHome";
 
 export default function Home() {
+  next: {
+    revalidate: 3600;
+  }
   return (
     <div className={styles.container}>
       <main>
@@ -15,17 +19,10 @@ export default function Home() {
           />
         </div>
         <h1 className={styles.title}>
-          Sistema feito para que você organize <br /> suas tarefas
+          System made for you to organize <br /> your tasks
         </h1>
 
-        <div className={styles.infoContent}>
-          <section className={styles.box}>
-            <span>+12 posts</span>
-          </section>
-          <section className={styles.box}>
-            <span>+90 mil comentários</span>
-          </section>
-        </div>
+        <ButtonHome />
       </main>
     </div>
   );

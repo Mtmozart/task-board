@@ -1,12 +1,5 @@
 import { db } from "../services/FireBaseConnection";
-import {
-  collection,
-  orderBy,
-  query,
-  where,
-  onSnapshot,
-  getDocs,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 import { IComment } from "./IComments";
 
 export async function loadComments(id: any) {

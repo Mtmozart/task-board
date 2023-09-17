@@ -47,8 +47,6 @@ export default function Dashboard() {
   const email = session?.user?.email || "";
   useEffect(() => {
     async function loadTasks() {
-      //controle de repetição
-
       const tasksRef = collection(db, "tasks");
       const q = await query(
         tasksRef,
