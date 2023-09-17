@@ -1,5 +1,5 @@
 "use client";
-import { Metadata } from "next";
+
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import styles from "./styles.module.css";
@@ -24,11 +24,6 @@ import {
 //react
 import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "My painel of tasks",
-  description: "My tasks in the task-board",
-};
 
 export default function Dashboard() {
   //verification
